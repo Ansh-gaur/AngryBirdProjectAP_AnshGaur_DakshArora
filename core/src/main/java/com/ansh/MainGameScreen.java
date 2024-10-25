@@ -28,6 +28,10 @@ public class MainGameScreen implements Screen {
     private Image gb1,gb2,gb3,gb4,gb5,gb6;
     private PigA piga;
     private Image pig_image;
+    private Texture vButton;
+    private Texture lButton;
+    private Image v_image;
+    private Image l_image;
 
 
 
@@ -106,7 +110,37 @@ public class MainGameScreen implements Screen {
         pig_image.setPosition(500,6*(gb1.getHeight()+2));
         stage.addActor(pig_image);
 
+        //shift to victory screen
+        vButton=new Texture("vicButton.png");
+        v_image=new Image(vButton);
+        v_image.setSize(Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
+        v_image.setPosition(10, 380);
+        stage.addActor(v_image);
 
+        //shift to lost screen
+        lButton=new Texture("lostButton.png");
+        l_image=new Image(lButton);
+        l_image.setSize(Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
+        l_image.setPosition(10, 320);
+        stage.addActor(l_image);
+
+        Screen v_s=new MainGameScreen(this.previousScreen);
+        //adding listeners
+        v_image.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("victory screen clicked!");
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new VictoryScreen(v_s));
+            }
+        });
+
+        l_image.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("lost screen clicked!");
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new LostScreen(v_s));
+            }
+        });
 
 
 
@@ -169,5 +203,7 @@ public class MainGameScreen implements Screen {
         stage.dispose();
         backgroundTexture.dispose();
         arrowTexture.dispose();
+        vButton.dispose();
+        lButton.dispose();
     }
 }
