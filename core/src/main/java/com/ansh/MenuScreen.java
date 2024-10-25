@@ -30,8 +30,8 @@ public class MenuScreen implements Screen {
 
         // Load textures for images
         startGameTexture = new Texture("angrybirdsbackground.jpg"); // Replace with your image file path
-        levelsTexture = new Texture("arrowmain.jpg"); // Replace with your image file path
-        oldGameTexture = new Texture("arrow.jpg"); // Replace with your image file path
+        levelsTexture = new Texture("playgame.png"); // Replace with your image file path
+        oldGameTexture = new Texture("savedgame.png"); // Replace with your image file path
 
         // Create images
         startGameImage = new Image(startGameTexture);
