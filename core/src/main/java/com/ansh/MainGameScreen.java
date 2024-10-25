@@ -177,13 +177,51 @@ public class MainGameScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        // Resize the stage's viewport
+        // Update the viewport with the new width and height
         stage.getViewport().update(width, height, true);
 
-        // Adjust background image size to fill the new screen size
+        // Update background size to fill the screen
         backgroundImage.setSize(width, height);
 
-        // Reposition the back button to stay in the top-left corner
+        // Update the positions and sizes of game elements
+        cata_image.setSize(width / 10, (height + 1000) / 10);
+        cata_image.setPosition(30, 10);
+
+        bb_image.setSize(width / 10, height / 10);
+        bb_image.setPosition(30, 100);
+
+        // Reposition and resize glass blocks
+        float blockHeight = height / 10;
+        float blockWidth = width / 10;
+
+        gb1.setSize(blockWidth, blockHeight);
+        gb1.setPosition(500, 10);
+
+        gb2.setSize(blockWidth, blockHeight);
+        gb2.setPosition(500, gb1.getY() + blockHeight + 3);
+
+        gb3.setSize(blockWidth, blockHeight);
+        gb3.setPosition(500, gb2.getY() + blockHeight + 3);
+
+        gb4.setSize(blockWidth, blockHeight);
+        gb4.setPosition(500, gb3.getY() + blockHeight + 3);
+
+        gb5.setSize(blockWidth, blockHeight);
+        gb5.setPosition(500, gb4.getY() + blockHeight + 2);
+
+        gb6.setSize(blockWidth, blockHeight);
+        gb6.setPosition(500, gb5.getY() + blockHeight + 2);
+
+        pig_image.setSize(blockWidth, blockHeight);
+        pig_image.setPosition(500, gb6.getY() + blockHeight + 2);
+
+        // Update the sizes and positions of buttons
+        v_image.setSize(width / 10, height / 10);
+        v_image.setPosition(10, 380);
+
+        l_image.setSize(width / 10, height / 10);
+        l_image.setPosition(10, 320);
+
         backButton.setSize(width / 20, height / 20);
         backButton.setPosition(10, height - backButton.getHeight() - 10);
     }
