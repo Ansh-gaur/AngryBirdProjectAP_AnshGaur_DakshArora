@@ -19,7 +19,12 @@ public class MainGameScreen implements Screen {
     private Image backgroundImage;
     private Texture arrowTexture;
     private ImageButton backButton;
-    private Screen previousScreen; // Reference to the previous screen
+    private Screen previousScreen;// Reference to the previous screen
+    //1
+    private Catapult cata;
+    //2
+    private Image cata_image;
+
 
     // Constructor to pass the previous screen
     public MainGameScreen(Screen previousScreen) {
@@ -31,16 +36,25 @@ public class MainGameScreen implements Screen {
         // Initialize the stage and set it to handle input
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
+        //3
+        cata=new Catapult();
+
 
         // Load the background texture
         backgroundTexture = new Texture("mainbacker.jpg"); // Replace with your background image path
         backgroundImage = new Image(backgroundTexture);
+
 
         // Set the background to fill the screen
         backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         // Add the background image to the stage
         stage.addActor(backgroundImage);
+        //4
+        cata_image=new Image(cata.cataimg);
+        cata_image.setSize(Gdx.graphics.getWidth() / 10, (Gdx.graphics.getHeight()+1000) / 10);
+        cata_image.setPosition(30,10);
+        stage.addActor(cata_image);
 
         // Load the arrow image texture
         arrowTexture = new Texture("arrowmain.jpg"); // Replace with your arrow image file
