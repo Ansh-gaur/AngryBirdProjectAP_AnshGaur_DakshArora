@@ -37,9 +37,9 @@ public class LevelsScreen implements Screen {
         stage.addActor(backgroundImage);
 
         // Load textures for the three images
-        image1Texture = new Texture("arrow.jpg"); // Replace with your image paths
-        image2Texture = new Texture("arrowmain.jpg");
-        image3Texture = new Texture("arrowmain.jpg");
+        image1Texture = new Texture("Level1.png"); // Replace with your image paths
+        image2Texture = new Texture("Level2.png");
+        image3Texture = new Texture("Level3.png");
 
         // Create images
         image1 = new Image(image1Texture);
