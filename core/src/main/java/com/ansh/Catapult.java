@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class Catapult {
-    public Texture cataimg=new Texture("catapult.png");
+    public Texture cataimg=new Texture("catapultfinal.png");
     private int power;
 
     public void loadBird()

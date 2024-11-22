@@ -3,7 +3,7 @@ package com.ansh;
 import com.badlogic.gdx.graphics.Texture;
 
 public class RedBird extends Bird {
-    public Texture redimg=new Texture("redbird1.png");
+    public Texture redimg=new Texture("redbirdfinal.png");
     private int specialpower;
     private int extraspeed;
 

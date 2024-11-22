@@ -10,5 +10,5 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 public class PigB extends Pig{
-    public Texture pigBpic=new Texture("pigB.png");
+    public Texture pigBpic=new Texture("pigbfinal.png");
 }
