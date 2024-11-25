@@ -53,6 +53,10 @@ public class MainGameScreen implements Screen {
         cata=new Catapult();
         bb=new BlackBird(world,0.6f,1.3f);
         gbl=new GlassBlock();
+
+
+
+
         piga=new PigA();
 
 
@@ -84,8 +88,10 @@ public class MainGameScreen implements Screen {
         stage.addActor(bb_image);
 
         //structure of glass
+
         gb1=new Image(gbl.glassimg);
         gb1.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
+        //gb1.setPosition(500,10);
         gb1.setPosition(500,10);
         stage.addActor(gb1);
 
@@ -113,6 +119,7 @@ public class MainGameScreen implements Screen {
         gb6.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
         gb6.setPosition(500,5*(gb1.getHeight()+2));
         stage.addActor(gb6);
+
 
         pig_image=new Image(piga.pigApic);
         pig_image.setSize(Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
@@ -184,6 +191,8 @@ public class MainGameScreen implements Screen {
             bb.getBlackbody().getPosition().y * PPM - bb_image.getHeight() / 2
         );
 
+
+
         // Update and draw the stage
         stage.act(delta);
         stage.draw();
@@ -211,6 +220,8 @@ public class MainGameScreen implements Screen {
         gb1.setSize(blockWidth, blockHeight);
         gb1.setPosition(500, 10);
 
+
+
         gb2.setSize(blockWidth, blockHeight);
         gb2.setPosition(500, gb1.getY() + blockHeight + 3);
 
@@ -225,6 +236,7 @@ public class MainGameScreen implements Screen {
 
         gb6.setSize(blockWidth, blockHeight);
         gb6.setPosition(500, gb5.getY() + blockHeight + 2);
+
 
         pig_image.setSize(blockWidth, blockHeight);
         pig_image.setPosition(500, gb6.getY() + blockHeight + 2);
