@@ -18,12 +18,12 @@ public class BlackBird extends Bird{
     private int extraspeed;
     private Body blackbody;
     private final float PPM = 100f;
-    public BlackBird(World world)
+    public BlackBird(World world,float x,float y)
     {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         //bodyDef.position.set(30 / PPM, 100 / PPM); // Initial position in meters
-        bodyDef.position.set(0.55f,1.2f);
+        bodyDef.position.set(x,y);
 
         blackbody = world.createBody(bodyDef);
 

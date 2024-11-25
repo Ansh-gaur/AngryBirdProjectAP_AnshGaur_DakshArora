@@ -51,7 +51,7 @@ public class MainGameScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         cata=new Catapult();
-        bb=new BlackBird(world);
+        bb=new BlackBird(world,0.6f,1.3f);
         gbl=new GlassBlock();
         piga=new PigA();
 
