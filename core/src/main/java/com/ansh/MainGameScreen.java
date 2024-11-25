@@ -5,6 +5,8 @@ import com.badlogic.gdx.Game; // Make sure this is imported
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -33,6 +35,8 @@ public class MainGameScreen implements Screen {
     private Image v_image;
     private Image l_image;
 
+    public World world; // Box2D world
+    private final float PPM = 100f;
 
 
     // Constructor to pass the previous screen
@@ -42,11 +46,12 @@ public class MainGameScreen implements Screen {
 
     @Override
     public void show() {
+        world = new World(new Vector2(0, -9.8f), true);
         // Initialize the stage and set it to handle input
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         cata=new Catapult();
-        bb=new BlackBird();
+        bb=new BlackBird(world);
         gbl=new GlassBlock();
         piga=new PigA();
 
@@ -71,7 +76,11 @@ public class MainGameScreen implements Screen {
 
         bb_image=new Image(bb.blackimg);
         bb_image.setSize((Gdx.graphics.getWidth()) / 10, Gdx.graphics.getHeight() / 10);
-        bb_image.setPosition(30,100);
+        //bb_image.setPosition(30,100);
+        bb_image.setPosition(
+            bb.getBlackbody().getPosition().x * PPM - bb_image.getWidth() / 2,
+            bb.getBlackbody().getPosition().y * PPM - bb_image.getHeight() / 2
+        );
         stage.addActor(bb_image);
 
         //structure of glass
@@ -169,6 +178,11 @@ public class MainGameScreen implements Screen {
     public void render(float delta) {
         // Clear the screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //world.step(1 / 60f, 6, 2);
+        bb_image.setPosition(
+            bb.getBlackbody().getPosition().x * PPM - bb_image.getWidth() / 2,
+            bb.getBlackbody().getPosition().y * PPM - bb_image.getHeight() / 2
+        );
 
         // Update and draw the stage
         stage.act(delta);
