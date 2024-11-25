@@ -186,10 +186,12 @@ public class MainGameScreen implements Screen {
         // Clear the screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //world.step(1 / 60f, 6, 2);
+
         bb_image.setPosition(
             bb.getBlackbody().getPosition().x * PPM - bb_image.getWidth() / 2,
             bb.getBlackbody().getPosition().y * PPM - bb_image.getHeight() / 2
         );
+
 
 
 
