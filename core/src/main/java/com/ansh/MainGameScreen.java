@@ -6,7 +6,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -38,6 +41,8 @@ public class MainGameScreen implements Screen {
     public World world; // Box2D world
     private final float PPM = 100f;
 
+    private Body groundBody;
+
 
     // Constructor to pass the previous screen
     public MainGameScreen(Screen previousScreen) {
@@ -52,6 +57,27 @@ public class MainGameScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
         cata=new Catapult();
         bb=new BlackBird(world,0.6f,1.3f);
+
+        // Define the ground body
+        BodyDef groundBodyDef = new BodyDef();
+        groundBodyDef.type = BodyDef.BodyType.StaticBody; // Ground doesn't move
+        groundBodyDef.position.set(0, 0); // Set ground position at the bottom of the screen
+
+// Create the ground body in the world
+        groundBody = world.createBody(groundBodyDef);
+
+// Define the ground shape as a box
+        PolygonShape groundBox = new PolygonShape();
+        groundBox.setAsBox(Gdx.graphics.getWidth() / PPM / 2, 10 / PPM); // Width is screen width, height is small
+
+// Create the fixture for collision
+        FixtureDef groundFixtureDef = new FixtureDef();
+        groundFixtureDef.shape = groundBox;
+        groundFixtureDef.friction = 0.5f; // Optional: control sliding
+        groundBody.createFixture(groundFixtureDef);
+
+// Dispose the shape after creating the fixture
+        groundBox.dispose();
 
 
 
