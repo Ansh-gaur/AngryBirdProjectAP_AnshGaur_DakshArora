@@ -18,24 +18,28 @@ public class PigA extends Pig{
     public PigA(World world, float x, float y)
     {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        //bodyDef.position.set(30 / PPM, 100 / PPM); // Initial position in meters
-        bodyDef.position.set(x,y);
+        bodyDef.type = BodyDef.BodyType.StaticBody; // Allow the pig to move dynamically
+        bodyDef.position.set(x, y);
 
         pigabody = world.createBody(bodyDef);
 
+        // Define the rectangular shape
+        PolygonShape shape = new PolygonShape();
+        float width = 50 / PPM; // Adjust the width of the rectangle
+        float height = 50 / PPM; // Adjust the height of the rectangle
+        shape.setAsBox(width / 2, height / 2); // Set half-width and half-height
 
-        CircleShape shape = new CircleShape();
-        shape.setRadius(25 / PPM); // Circle radius in meters
-
-
+        // Define the fixture
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 1.0f;
-        fixtureDef.restitution = 0.5f; // Bounciness
-        fixtureDef.friction = 0.5f;
+        fixtureDef.density = 0.8f; // Adjust density for desired weight
+        fixtureDef.restitution = 0.2f; // Less bounciness
+        fixtureDef.friction = 0.7f; // Higher friction for stability
 
+        // Attach the fixture to the body
         pigabody.createFixture(fixtureDef);
+
+        // Dispose of the shape after use
         shape.dispose();
     }
     public Body getPigAbody()

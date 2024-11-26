@@ -6,9 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -41,7 +38,15 @@ public class MainGameScreen implements Screen {
     public World world; // Box2D world
     private final float PPM = 100f;
 
-    private Body groundBody;
+    private Body groundBody; // The Box2D body for the ground
+
+    //Variables for dragging
+    private boolean isDragging = false; // Whether the bird is being dragged
+    private Vector2 dragStart = new Vector2(); // Start position of the drag
+    private Vector2 dragEnd = new Vector2(); // End position of the drag
+    private Vector2 birdInitialPosition = new Vector2();
+
+
 
 
     // Constructor to pass the previous screen
@@ -61,7 +66,7 @@ public class MainGameScreen implements Screen {
         // Define the ground body
         BodyDef groundBodyDef = new BodyDef();
         groundBodyDef.type = BodyDef.BodyType.StaticBody; // Ground doesn't move
-        groundBodyDef.position.set(0, 0); // Set ground position at the bottom of the screen
+        groundBodyDef.position.set(Gdx.graphics.getWidth()/PPM/2,0); // Set ground position at the bottom of the screen
 
 // Create the ground body in the world
         groundBody = world.createBody(groundBodyDef);
@@ -240,6 +245,54 @@ public class MainGameScreen implements Screen {
 
         // Add the back button to the stage
         stage.addActor(backButton);
+
+
+        bb_image.addListener(new ClickListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+
+                isDragging = true;
+                dragStart.set(x + bb_image.getX(), y + bb_image.getY()); // Initial touch position
+                birdInitialPosition.set(bb.getBlackbody().getPosition()); // Store initial position of the bird
+                return true;
+            }
+
+            @Override
+            public void touchDragged(InputEvent event, float x, float y, int pointer) {
+                if (isDragging) {
+                    // Update the drag position (adjust for image offset)
+                    dragEnd.set(x + bb_image.getX(), y + bb_image.getY());
+                    // Update bird's image position to follow drag
+                    bb_image.setPosition(dragEnd.x - bb_image.getWidth() / 2, dragEnd.y - bb_image.getHeight() / 2);
+                }
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                if (isDragging) {
+                    isDragging = false;
+
+                    // Calculate drag vector and release velocity
+                    Vector2 releaseVector = new Vector2(
+                        birdInitialPosition.x * PPM - dragEnd.x,
+                        birdInitialPosition.y * PPM - dragEnd.y
+                    ).scl(1 / PPM); // Scale to world coordinates
+                    bb.getBlackbody().setType(BodyDef.BodyType.DynamicBody);
+                    // Apply impulse to bird's Box2D body
+                    bb.getBlackbody().applyLinearImpulse(
+                        releaseVector.scl(10f), // Adjust the scalar for desired strength
+                        bb.getBlackbody().getWorldCenter(),
+                        true
+                    );
+
+                    // Reset bird's image position to be updated by physics
+                    bb_image.setPosition(
+                        bb.getBlackbody().getPosition().x * PPM - bb_image.getWidth() / 2,
+                        bb.getBlackbody().getPosition().y * PPM - bb_image.getHeight() / 2
+                    );
+                }
+            }
+        });
     }
 
     @Override
@@ -247,11 +300,20 @@ public class MainGameScreen implements Screen {
         // Clear the screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //world.step(1 / 60f, 6, 2);
+        world.step(1 / 60f, 6, 2);
 
+        // Update bird position (if not dragging)
+        if (!isDragging) {
+            bb_image.setPosition(
+                bb.getBlackbody().getPosition().x * PPM - bb_image.getWidth() / 2,
+                bb.getBlackbody().getPosition().y * PPM - bb_image.getHeight() / 2
+            );
+        }
+        /*
         bb_image.setPosition(
             bb.getBlackbody().getPosition().x * PPM - bb_image.getWidth() / 2,
             bb.getBlackbody().getPosition().y * PPM - bb_image.getHeight() / 2
-        );
+        );*/
         gb1.setPosition(
             gbl1.getGlassbody().getPosition().x * PPM - gb1.getWidth() / 2,
             gbl1.getGlassbody().getPosition().y * PPM - gb1.getHeight() / 2
@@ -340,6 +402,8 @@ public class MainGameScreen implements Screen {
 
         backButton.setSize(width / 20, height / 20);
         backButton.setPosition(10, height - backButton.getHeight() - 10);
+
+
     }
 
     @Override

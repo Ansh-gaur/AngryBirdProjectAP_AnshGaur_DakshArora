@@ -12,7 +12,7 @@ public class RedBird extends Bird {
     public RedBird(World world,float x,float y)
     {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.type = BodyDef.BodyType.StaticBody;
         //bodyDef.position.set(30 / PPM, 100 / PPM); // Initial position in meters
         bodyDef.position.set(x,y);
 

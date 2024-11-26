@@ -19,24 +19,28 @@ public class WoodBlock extends Block{
     public WoodBlock(World world, float x, float y)
     {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        //bodyDef.position.set(30 / PPM, 100 / PPM); // Initial position in meters
-        bodyDef.position.set(x,y);
+        bodyDef.type = BodyDef.BodyType.StaticBody; // Allow the block to move and fall
+        bodyDef.position.set(x, y);
 
         woodbody = world.createBody(bodyDef);
 
+        // Define the shape as a box
+        PolygonShape shape = new PolygonShape();
+        float width = 50 / PPM; // Adjust width of the block in meters
+        float height = 100 / PPM; // Adjust height of the block in meters
+        shape.setAsBox(width / 2, height / 2); // Set box dimensions (half-width and half-height)
 
-        CircleShape shape = new CircleShape();
-        shape.setRadius(25 / PPM); // Circle radius in meters
-
-
+        // Define the fixture
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
-        fixtureDef.density = 1.0f;
-        fixtureDef.restitution = 0.5f; // Bounciness
+        fixtureDef.density = 1.0f; // Adjust density for desired mass
+        fixtureDef.restitution = 0.1f; // Low bounciness
         fixtureDef.friction = 0.5f;
 
+        // Attach the fixture to the body
         woodbody.createFixture(fixtureDef);
+
+        // Dispose of the shape after use
         shape.dispose();
     }
     public Body getWoodbody()
