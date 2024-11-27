@@ -74,7 +74,7 @@ public class oldgamescreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Start Game clicked!");
                 // Transition to the game start screen
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainGameScreen(love));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainGameScreen2(love));
             }
         });
 
@@ -84,7 +84,7 @@ public class oldgamescreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Start Game clicked!");
                 // Transition to the game start screen
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainGameScreen(love));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MainGameScreen3(love));
             }
         });
 

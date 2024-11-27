@@ -26,8 +26,8 @@ public class MainGameScreen2 implements Screen {
     private Image cata_image;
     private RedBird rr;
     private Image rr_image;
-    private IronBlock gbl1,gbl2,gbl3,gbl4,gbl5,gbl6;
-    private Image gb1,gb2,gb3,gb4,gb5,gb6;
+    private IronBlock gbl1,gbl2,gbl3,gbl4,gbl5,gbl6,gbl7,gbl8,gbl9,gbl10,gbl11;
+    private Image gb1,gb2,gb3,gb4,gb5,gb6,gb7,gb8,gb9,gb10,gb11;
     private PigB pigb;
     private Image pig_image;
     private Texture vButton;
@@ -200,6 +200,58 @@ public class MainGameScreen2 implements Screen {
         );
         stage.addActor(gb6);
 
+        gbl7 = new IronBlock(world, 3.85f, 0.3f);
+        gb7 = new Image(gbl7.ironimg);
+        gb7.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
+        //gb1.setPosition(500,10);
+        gb7.setPosition(
+            gbl7.getIronbody().getPosition().x * PPM - gb7.getWidth() / 2,
+            gbl7.getIronbody().getPosition().y * PPM - gb7.getHeight() / 2
+        );
+        stage.addActor(gb7);
+
+        gbl8 = new IronBlock(world, 3.85f, 0.3f + gb7.getHeight() / PPM);
+        gb8 = new Image(gbl8.ironimg);
+        gb8.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
+        //gb2.setPosition(500,gb1.getHeight()+3);
+        gb8.setPosition(
+            gbl8.getIronbody().getPosition().x * PPM - gb8.getWidth() / 2,
+            gbl8.getIronbody().getPosition().y * PPM - gb8.getHeight() / 2
+        );
+        stage.addActor(gb8);
+
+        gbl9 = new IronBlock(world, 3.85f, 0.3f + 2*gb7.getHeight() / PPM);
+        gb9 = new Image(gbl9.ironimg);
+        gb9.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
+        //gb2.setPosition(500,gb1.getHeight()+3);
+        gb9.setPosition(
+            gbl9.getIronbody().getPosition().x * PPM - gb9.getWidth() / 2,
+            gbl9.getIronbody().getPosition().y * PPM - gb9.getHeight() / 2
+        );
+        stage.addActor(gb9);
+
+        gbl10 = new IronBlock(world, 3.85f, 0.3f + 3*gb7.getHeight() / PPM);
+        gb10 = new Image(gbl10.ironimg);
+        gb10.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
+        //gb2.setPosition(500,gb1.getHeight()+3);
+        gb10.setPosition(
+            gbl10.getIronbody().getPosition().x * PPM - gb10.getWidth() / 2,
+            gbl10.getIronbody().getPosition().y * PPM - gb10.getHeight() / 2
+        );
+        stage.addActor(gb10);
+
+        gbl11 = new IronBlock(world, 3.85f, 0.3f + 4*gb7.getHeight() / PPM);
+        gb11 = new Image(gbl11.ironimg);
+        gb11.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
+        //gb2.setPosition(500,gb1.getHeight()+3);
+        gb11.setPosition(
+            gbl11.getIronbody().getPosition().x * PPM - gb11.getWidth() / 2,
+            gbl11.getIronbody().getPosition().y * PPM - gb11.getHeight() / 2
+        );
+        stage.addActor(gb11);
+
+
+
         pigb = new PigB(world, 4.5f, 0.3f + 6 * gb1.getHeight() / PPM + 0.1f);
         pig_image = new Image(pigb.pigBpic);
         pig_image.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
@@ -357,6 +409,28 @@ public class MainGameScreen2 implements Screen {
             gbl6.getIronbody().getPosition().x * PPM - gb6.getWidth() / 2,
             gbl6.getIronbody().getPosition().y * PPM - gb6.getHeight() / 2
         );
+        gb7.setPosition(
+            gbl7.getIronbody().getPosition().x * PPM - gb7.getWidth() / 2,
+            gbl7.getIronbody().getPosition().y * PPM - gb7.getHeight() / 2
+        );
+        gb8.setPosition(
+            gbl8.getIronbody().getPosition().x * PPM - gb8.getWidth() / 2,
+            gbl8.getIronbody().getPosition().y * PPM - gb8.getHeight() / 2
+        );
+        gb9.setPosition(
+            gbl9.getIronbody().getPosition().x * PPM - gb9.getWidth() / 2,
+            gbl9.getIronbody().getPosition().y * PPM - gb9.getHeight() / 2
+        );
+
+        gb10.setPosition(
+            gbl10.getIronbody().getPosition().x * PPM - gb10.getWidth() / 2,
+            gbl10.getIronbody().getPosition().y * PPM - gb10.getHeight() / 2
+        );
+
+        gb11.setPosition(
+            gbl11.getIronbody().getPosition().x * PPM - gb11.getWidth() / 2,
+            gbl11.getIronbody().getPosition().y * PPM - gb11.getHeight() / 2
+        );
         if (pigHit) {
             // Hide the pig by removing it from the stage or setting it to invisible
             pig_image.setVisible(false);
@@ -425,6 +499,8 @@ public class MainGameScreen2 implements Screen {
 
         gb6.setSize(blockWidth, blockHeight);
         gb6.setPosition(500, gb5.getY() + blockHeight + 2);
+
+
 
 
         pig_image.setSize(blockWidth, blockHeight);

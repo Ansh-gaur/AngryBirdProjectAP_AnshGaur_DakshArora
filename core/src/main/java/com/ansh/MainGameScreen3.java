@@ -26,8 +26,8 @@ public class MainGameScreen3 implements Screen {
     private Image cata_image;
     private YellowBird yy;
     private Image yy_image;
-    private WoodBlock gbl1,gbl2,gbl3,gbl4,gbl5,gbl6;
-    private Image gb1,gb2,gb3,gb4,gb5,gb6;
+    private WoodBlock gbl1,gbl2,gbl3,gbl4,gbl5,gbl6,gbl7,gbl8,gbl9,gbl10,gbl11,gbl12,gbl13,gbl14,gbl15;
+    private Image gb1,gb2,gb3,gb4,gb5,gb6,gb7,gb8,gb9,gb10,gb11,gb12,gb13,gb14,gb15;
     private PigC pigc;
     private Image pig_image;
     private Texture vButton;
@@ -201,6 +201,97 @@ public class MainGameScreen3 implements Screen {
         );
         stage.addActor(gb6);
 
+        gbl7 = new WoodBlock(world, 3.85f, 0.3f);
+        gb7 = new Image(gbl7.woodimg);
+        gb7.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
+        //gb1.setPosition(500,10);
+        gb7.setPosition(
+            gbl7.getWoodbody().getPosition().x * PPM - gb7.getWidth() / 2,
+            gbl7.getWoodbody().getPosition().y * PPM - gb7.getHeight() / 2
+        );
+        stage.addActor(gb7);
+
+        gbl8 = new WoodBlock(world, 3.85f, 0.3f + gb7.getHeight() / PPM);
+        gb8 = new Image(gbl8.woodimg);
+        gb8.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
+        //gb2.setPosition(500,gb1.getHeight()+3);
+        gb8.setPosition(
+            gbl8.getWoodbody().getPosition().x * PPM - gb8.getWidth() / 2,
+            gbl8.getWoodbody().getPosition().y * PPM - gb8.getHeight() / 2
+        );
+        stage.addActor(gb8);
+
+        gbl9 = new WoodBlock(world, 3.85f, 0.3f + 2*gb7.getHeight() / PPM);
+        gb9 = new Image(gbl9.woodimg);
+        gb9.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
+        //gb2.setPosition(500,gb1.getHeight()+3);
+        gb9.setPosition(
+            gbl9.getWoodbody().getPosition().x * PPM - gb9.getWidth() / 2,
+            gbl9.getWoodbody().getPosition().y * PPM - gb9.getHeight() / 2
+        );
+        stage.addActor(gb9);
+
+        gbl10 = new WoodBlock(world, 3.85f, 0.3f + 3*gb7.getHeight() / PPM);
+        gb10 = new Image(gbl10.woodimg);
+        gb10.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
+        //gb2.setPosition(500,gb1.getHeight()+3);
+        gb10.setPosition(
+            gbl10.getWoodbody().getPosition().x * PPM - gb10.getWidth() / 2,
+            gbl10.getWoodbody().getPosition().y * PPM - gb10.getHeight() / 2
+        );
+        stage.addActor(gb10);
+
+        gbl11 = new WoodBlock(world, 3.85f, 0.3f + 4*gb7.getHeight() / PPM);
+        gb11 = new Image(gbl11.woodimg);
+        gb11.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
+        //gb2.setPosition(500,gb1.getHeight()+3);
+        gb11.setPosition(
+            gbl11.getWoodbody().getPosition().x * PPM - gb11.getWidth() / 2,
+            gbl11.getWoodbody().getPosition().y * PPM - gb11.getHeight() / 2
+        );
+        stage.addActor(gb11);
+
+        gbl12=new WoodBlock(world,3.2f,0.3f);
+        gb12=new Image(gbl12.woodimg);
+        gb12.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
+        //gb1.setPosition(500,10);
+        gb12.setPosition(
+            gbl12.getWoodbody().getPosition().x * PPM - gb12.getWidth() / 2,
+            gbl12.getWoodbody().getPosition().y * PPM - gb12.getHeight() / 2
+        );
+        stage.addActor(gb12);
+
+        gbl13 = new WoodBlock(world, 3.2f, 0.3f + gb12.getHeight() / PPM);
+        gb13 = new Image(gbl13.woodimg);
+        gb13.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
+        //gb2.setPosition(500,gb1.getHeight()+3);
+        gb13.setPosition(
+            gbl13.getWoodbody().getPosition().x * PPM - gb13.getWidth() / 2,
+            gbl13.getWoodbody().getPosition().y * PPM - gb13.getHeight() / 2
+        );
+        stage.addActor(gb13);
+
+        gbl14 = new WoodBlock(world, 3.2f, 0.3f + 2*gb12.getHeight() / PPM);
+        gb14 = new Image(gbl14.woodimg);
+        gb14.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
+        //gb2.setPosition(500,gb1.getHeight()+3);
+        gb14.setPosition(
+            gbl14.getWoodbody().getPosition().x * PPM - gb14.getWidth() / 2,
+            gbl14.getWoodbody().getPosition().y * PPM - gb14.getHeight() / 2
+        );
+        stage.addActor(gb14);
+
+        gbl15 = new WoodBlock(world, 3.2f, 0.3f + 3*gb12.getHeight() / PPM);
+        gb15 = new Image(gbl15.woodimg);
+        gb15.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
+        //gb2.setPosition(500,gb1.getHeight()+3);
+        gb15.setPosition(
+            gbl15.getWoodbody().getPosition().x * PPM - gb15.getWidth() / 2,
+            gbl15.getWoodbody().getPosition().y * PPM - gb15.getHeight() / 2
+        );
+        stage.addActor(gb15);
+
+
         pigc=new PigC(world,4.5f,0.3f+6*gb1.getHeight()/PPM+0.1f);
         pig_image=new Image(pigc.pigCpic);
         pig_image.setSize(Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
@@ -358,6 +449,49 @@ public class MainGameScreen3 implements Screen {
             gbl6.getWoodbody().getPosition().x * PPM - gb6.getWidth() / 2,
             gbl6.getWoodbody().getPosition().y * PPM - gb6.getHeight() / 2
         );
+        gb7.setPosition(
+            gbl7.getWoodbody().getPosition().x * PPM - gb7.getWidth() / 2,
+            gbl7.getWoodbody().getPosition().y * PPM - gb7.getHeight() / 2
+        );
+        gb8.setPosition(
+            gbl8.getWoodbody().getPosition().x * PPM - gb8.getWidth() / 2,
+            gbl8.getWoodbody().getPosition().y * PPM - gb8.getHeight() / 2
+        );
+        gb9.setPosition(
+            gbl9.getWoodbody().getPosition().x * PPM - gb9.getWidth() / 2,
+            gbl9.getWoodbody().getPosition().y * PPM - gb9.getHeight() / 2
+        );
+
+        gb10.setPosition(
+            gbl10.getWoodbody().getPosition().x * PPM - gb10.getWidth() / 2,
+            gbl10.getWoodbody().getPosition().y * PPM - gb10.getHeight() / 2
+        );
+
+        gb11.setPosition(
+            gbl11.getWoodbody().getPosition().x * PPM - gb11.getWidth() / 2,
+            gbl11.getWoodbody().getPosition().y * PPM - gb11.getHeight() / 2
+        );
+
+        gb12.setPosition(
+            gbl12.getWoodbody().getPosition().x * PPM - gb12.getWidth() / 2,
+            gbl12.getWoodbody().getPosition().y * PPM - gb12.getHeight() / 2
+        );
+
+        gb13.setPosition(
+            gbl13.getWoodbody().getPosition().x * PPM - gb13.getWidth() / 2,
+            gbl13.getWoodbody().getPosition().y * PPM - gb13.getHeight() / 2
+        );
+
+        gb14.setPosition(
+            gbl14.getWoodbody().getPosition().x * PPM - gb14.getWidth() / 2,
+            gbl14.getWoodbody().getPosition().y * PPM - gb14.getHeight() / 2
+        );
+
+        gb15.setPosition(
+            gbl15.getWoodbody().getPosition().x * PPM - gb15.getWidth() / 2,
+            gbl15.getWoodbody().getPosition().y * PPM - gb15.getHeight() / 2
+        );
+
         if (pigHit) {
             // Hide the pig by removing it from the stage or setting it to invisible
             pig_image.setVisible(false);
@@ -465,4 +599,3 @@ public class MainGameScreen3 implements Screen {
         lButton.dispose();
     }
 }
-
