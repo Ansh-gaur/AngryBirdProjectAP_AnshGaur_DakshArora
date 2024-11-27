@@ -16,6 +16,7 @@ public class WoodBlock extends Block{
     public Texture  woodimg=new Texture("woodenblock.png");
     private Body woodbody;
     private final float PPM = 100f;
+    public int strength=4;
     public WoodBlock(World world, float x, float y)
     {
         BodyDef bodyDef = new BodyDef();

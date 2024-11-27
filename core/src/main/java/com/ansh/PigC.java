@@ -14,6 +14,7 @@ public class PigC extends Pig{
     public Texture pigCpic=new Texture("pigcfinal.png");
     private Body pigcbody;
     private final float PPM = 100f;
+    public int bear=3;
     public PigC(World world, float x, float y)
     {
         BodyDef bodyDef = new BodyDef();

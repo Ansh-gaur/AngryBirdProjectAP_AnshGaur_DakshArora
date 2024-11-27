@@ -15,6 +15,7 @@ public class IronBlock extends Block {
     public Texture ironimg=new Texture("ironblock.png");
     private Body ironbody;
     private final float PPM = 100f;
+    public int strength=6;
     public IronBlock(World world, float x, float y)
     {
         BodyDef bodyDef = new BodyDef();

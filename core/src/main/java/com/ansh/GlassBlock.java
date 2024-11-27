@@ -16,6 +16,7 @@ public class GlassBlock extends Block {
     public Texture glassimg=new Texture("glassblock.png");
     private Body glassbody;
     private final float PPM = 100f;
+    public int strength=5;
     public GlassBlock(World world,float x,float y)
     {
         BodyDef bodyDef = new BodyDef();

@@ -8,6 +8,7 @@ public class YellowBird extends Bird{
     private int specialpower;
     private int extraspeed;
     private Body yellowbody;
+    public int impact=3;
     private final float PPM = 100f;
     public YellowBird(World world,float x,float y)
     {

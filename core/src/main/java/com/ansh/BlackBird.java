@@ -18,6 +18,7 @@ public class BlackBird extends Bird{
     private int extraspeed;
     private Body blackbody;
     private final float PPM = 100f;
+    public int impact=1;
     public BlackBird(World world,float x,float y)
     {
         BodyDef bodyDef = new BodyDef();
