@@ -51,6 +51,9 @@ public class MainGameScreen3 implements Screen {
     private boolean pigHit = false; // Flag to check if pig was hit
     private float postLaunchTimer = 3f;
 
+    private Texture s_b;
+    private Image save_image;
+
     public MainGameScreen3(Screen previousScreen) {
         this.previousScreen = previousScreen;
     }
@@ -316,6 +319,12 @@ public class MainGameScreen3 implements Screen {
         l_image.setPosition(10, 320);
         stage.addActor(l_image);
 
+        s_b=new Texture("savebutton11.png");
+        save_image=new Image(s_b);
+        save_image.setSize(Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
+        save_image.setPosition(10, 250);
+        stage.addActor(save_image);
+
         Screen v_s=new MainGameScreen3(this.previousScreen);
         //adding listeners
         v_image.addListener(new ClickListener() {
@@ -331,6 +340,14 @@ public class MainGameScreen3 implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("lost screen clicked!");
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new LostScreen(v_s));
+            }
+        });
+
+        save_image.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Save game clicked!");
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MenuScreen());
             }
         });
 
@@ -599,3 +616,4 @@ public class MainGameScreen3 implements Screen {
         lButton.dispose();
     }
 }
+

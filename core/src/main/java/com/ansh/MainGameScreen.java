@@ -46,8 +46,12 @@ public class MainGameScreen implements Screen {
     private Vector2 dragEnd = new Vector2(); // End position of the drag
     private Vector2 birdInitialPosition = new Vector2();
 
+    //Variables for collision detection
     private boolean pigHit = false; // Flag to check if pig was hit
-    private float postLaunchTimer = 3f;
+    private float postLaunchTimer = 3f; // Time to wait after launch to determine result
+
+    private Texture s_b;
+    private Image save_image;
 
 
 
@@ -60,6 +64,7 @@ public class MainGameScreen implements Screen {
     @Override
     public void show() {
         world = new World(new Vector2(0, -9.8f), true);
+
         //Adding contact Listener
         world.setContactListener(new ContactListener() {
             @Override
@@ -115,9 +120,6 @@ public class MainGameScreen implements Screen {
 
 
 
-
-
-
         // Load the background texture
         backgroundTexture = new Texture("mainbacker.jpg"); // Replace with your background image path
         backgroundImage = new Image(backgroundTexture);
@@ -133,6 +135,7 @@ public class MainGameScreen implements Screen {
         cata_image.setSize(Gdx.graphics.getWidth() / 10, (Gdx.graphics.getHeight()+1000) / 10);
         cata_image.setPosition(30,10);
         stage.addActor(cata_image);
+
         //blackbird
 
         bb_image=new Image(bb.blackimg);
@@ -232,6 +235,12 @@ public class MainGameScreen implements Screen {
         l_image.setPosition(10, 320);
         stage.addActor(l_image);
 
+        s_b=new Texture("savebutton11.png");
+        save_image=new Image(s_b);
+        save_image.setSize(Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
+        save_image.setPosition(10, 250);
+        stage.addActor(save_image);
+
         Screen v_s=new MainGameScreen(this.previousScreen);
         //adding listeners
         v_image.addListener(new ClickListener() {
@@ -247,6 +256,14 @@ public class MainGameScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("lost screen clicked!");
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new LostScreen(v_s));
+            }
+        });
+
+        save_image.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Save game clicked!");
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MenuScreen());
             }
         });
 
@@ -335,6 +352,7 @@ public class MainGameScreen implements Screen {
                 bb.getBlackbody().getPosition().y * PPM - bb_image.getHeight() / 2
             );
         }
+
         /*
         bb_image.setPosition(
             bb.getBlackbody().getPosition().x * PPM - bb_image.getWidth() / 2,
@@ -360,6 +378,7 @@ public class MainGameScreen implements Screen {
             gbl5.getGlassbody().getPosition().x * PPM - gb5.getWidth() / 2,
             gbl5.getGlassbody().getPosition().y * PPM - gb5.getHeight() / 2
         );
+
         gb6.setPosition(
             gbl6.getGlassbody().getPosition().x * PPM - gb6.getWidth() / 2,
             gbl6.getGlassbody().getPosition().y * PPM - gb6.getHeight() / 2
@@ -445,6 +464,9 @@ public class MainGameScreen implements Screen {
 
         l_image.setSize(width / 10, height / 10);
         l_image.setPosition(10, 320);
+
+        save_image.setSize(width / 10, height / 10);
+        save_image.setPosition(10, 260);
 
         backButton.setSize(width / 20, height / 20);
         backButton.setPosition(10, height - backButton.getHeight() - 10);
