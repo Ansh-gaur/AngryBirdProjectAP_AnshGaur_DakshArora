@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class MainGameScreen implements Screen {
+public class MainGameScreen2 implements Screen {
     private Stage stage;
     private Texture backgroundTexture;
     private Image backgroundImage;
@@ -24,11 +24,11 @@ public class MainGameScreen implements Screen {
     private Screen previousScreen;// Reference to the previous screen
     private Catapult cata;
     private Image cata_image;
-    private BlackBird bb;
-    private Image bb_image;
+    private RedBird rr;
+    private Image rr_image;
     private GlassBlock gbl1,gbl2,gbl3,gbl4,gbl5,gbl6;
     private Image gb1,gb2,gb3,gb4,gb5,gb6;
-    private PigA piga;
+    private PigB pigb;
     private Image pig_image;
     private Texture vButton;
     private Texture lButton;
@@ -46,20 +46,22 @@ public class MainGameScreen implements Screen {
     private Vector2 dragEnd = new Vector2(); // End position of the drag
     private Vector2 birdInitialPosition = new Vector2();
 
+    //Variables for collision detection
     private boolean pigHit = false; // Flag to check if pig was hit
-    private float postLaunchTimer = 3f;
+    private float postLaunchTimer = 3f; // Time to wait after launch to determine result
 
 
 
 
     // Constructor to pass the previous screen
-    public MainGameScreen(Screen previousScreen) {
+    public MainGameScreen2(Screen previousScreen) {
         this.previousScreen = previousScreen;
     }
 
     @Override
     public void show() {
         world = new World(new Vector2(0, -9.8f), true);
+
         //Adding contact Listener
         world.setContactListener(new ContactListener() {
             @Override
@@ -68,31 +70,33 @@ public class MainGameScreen implements Screen {
                 Fixture fixtureA = contact.getFixtureA();
                 Fixture fixtureB = contact.getFixtureB();
 
-                if ((fixtureA.getBody() == piga.getPigAbody() && fixtureB.getBody() == bb.getBlackbody()) ||
-                    (fixtureB.getBody() == piga.getPigAbody() && fixtureA.getBody() == bb.getBlackbody())) {
+                if ((fixtureA.getBody() == pigb.getPigBbody() && fixtureB.getBody() == rr.getRedbody()) ||
+                    (fixtureB.getBody() == pigb.getPigBbody() && fixtureA.getBody() == rr.getRedbody())) {
                     pigHit = true;
                 }
             }
 
             @Override
-            public void endContact(Contact contact) {}
+            public void endContact(Contact contact) {
+            }
 
             @Override
-            public void preSolve(Contact contact, Manifold oldManifold) {}
+            public void preSolve(Contact contact, Manifold oldManifold) {
+            }
 
             @Override
-            public void postSolve(Contact contact, ContactImpulse impulse) {}
+            public void postSolve(Contact contact, ContactImpulse impulse) {
+            }
         });
-        // Initialize the stage and set it to handle input
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
-        cata=new Catapult();
-        bb=new BlackBird(world,0.6f,1.3f);
+        cata = new Catapult();
+        rr = new RedBird(world, 0.6f, 1.3f);
 
         // Define the ground body
         BodyDef groundBodyDef = new BodyDef();
         groundBodyDef.type = BodyDef.BodyType.StaticBody; // Ground doesn't move
-        groundBodyDef.position.set(Gdx.graphics.getWidth()/PPM/2,0); // Set ground position at the bottom of the screen
+        groundBodyDef.position.set(Gdx.graphics.getWidth() / PPM / 2, 0); // Set ground position at the bottom of the screen
 
 // Create the ground body in the world
         groundBody = world.createBody(groundBodyDef);
@@ -110,14 +114,6 @@ public class MainGameScreen implements Screen {
 // Dispose the shape after creating the fixture
         groundBox.dispose();
 
-
-
-
-
-
-
-
-
         // Load the background texture
         backgroundTexture = new Texture("mainbacker.jpg"); // Replace with your background image path
         backgroundImage = new Image(backgroundTexture);
@@ -129,25 +125,22 @@ public class MainGameScreen implements Screen {
         // Add the background image to the stage
         stage.addActor(backgroundImage);
         //Catapult
-        cata_image=new Image(cata.cataimg);
-        cata_image.setSize(Gdx.graphics.getWidth() / 10, (Gdx.graphics.getHeight()+1000) / 10);
-        cata_image.setPosition(30,10);
+        cata_image = new Image(cata.cataimg);
+        cata_image.setSize(Gdx.graphics.getWidth() / 10, (Gdx.graphics.getHeight() + 1000) / 10);
+        cata_image.setPosition(30, 10);
         stage.addActor(cata_image);
-        //blackbird
 
-        bb_image=new Image(bb.blackimg);
-        bb_image.setSize((Gdx.graphics.getWidth()) / 10, Gdx.graphics.getHeight() / 10);
+        rr_image = new Image(rr.redimg);
+        rr_image.setSize((Gdx.graphics.getWidth()) / 10, Gdx.graphics.getHeight() / 10);
         //bb_image.setPosition(30,100);
-        bb_image.setPosition(
-            bb.getBlackbody().getPosition().x * PPM - bb_image.getWidth() / 2,
-            bb.getBlackbody().getPosition().y * PPM - bb_image.getHeight() / 2
+        rr_image.setPosition(
+            rr.getRedbody().getPosition().x * PPM - rr_image.getWidth() / 2,
+            rr.getRedbody().getPosition().y * PPM - rr_image.getHeight() / 2
         );
-        stage.addActor(bb_image);
+        stage.addActor(rr_image);
 
-        //structure of glass
-
-        gbl1=new GlassBlock(world,4.5f,0.3f);
-        gb1=new Image(gbl1.glassimg);
+        gbl1 = new GlassBlock(world, 4.5f, 0.3f);
+        gb1 = new Image(gbl1.glassimg);
         gb1.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
         //gb1.setPosition(500,10);
         gb1.setPosition(
@@ -156,8 +149,8 @@ public class MainGameScreen implements Screen {
         );
         stage.addActor(gb1);
 
-        gbl2=new GlassBlock(world,4.5f,0.3f+gb1.getHeight()/PPM);
-        gb2=new Image(gbl2.glassimg);
+        gbl2 = new GlassBlock(world, 4.5f, 0.3f + gb1.getHeight() / PPM);
+        gb2 = new Image(gbl2.glassimg);
         gb2.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
         //gb2.setPosition(500,gb1.getHeight()+3);
         gb2.setPosition(
@@ -167,8 +160,8 @@ public class MainGameScreen implements Screen {
         stage.addActor(gb2);
 
 
-        gbl3=new GlassBlock(world,4.5f,0.3f+2*gb1.getHeight()/PPM);
-        gb3=new Image(gbl3.glassimg);
+        gbl3 = new GlassBlock(world, 4.5f, 0.3f + 2 * gb1.getHeight() / PPM);
+        gb3 = new Image(gbl3.glassimg);
         gb3.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
 
         gb3.setPosition(
@@ -177,8 +170,8 @@ public class MainGameScreen implements Screen {
         );
         stage.addActor(gb3);
 
-        gbl4=new GlassBlock(world,4.5f,0.3f+3*gb1.getHeight()/PPM);
-        gb4=new Image(gbl4.glassimg);
+        gbl4 = new GlassBlock(world, 4.5f, 0.3f + 3 * gb1.getHeight() / PPM);
+        gb4 = new Image(gbl4.glassimg);
         gb4.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
         //gb2.setPosition(500,gb1.getHeight()+3);
         gb4.setPosition(
@@ -187,8 +180,8 @@ public class MainGameScreen implements Screen {
         );
         stage.addActor(gb4);
 
-        gbl5=new GlassBlock(world,4.5f,0.3f+4*gb1.getHeight()/PPM);
-        gb5=new Image(gbl5.glassimg);
+        gbl5 = new GlassBlock(world, 4.5f, 0.3f + 4 * gb1.getHeight() / PPM);
+        gb5 = new Image(gbl5.glassimg);
         gb5.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
         //gb2.setPosition(500,gb1.getHeight()+3);
         gb5.setPosition(
@@ -197,8 +190,8 @@ public class MainGameScreen implements Screen {
         );
         stage.addActor(gb5);
 
-        gbl6=new GlassBlock(world,4.5f,0.3f+5*gb1.getHeight()/PPM);
-        gb6=new Image(gbl6.glassimg);
+        gbl6 = new GlassBlock(world, 4.5f, 0.3f + 5 * gb1.getHeight() / PPM);
+        gb6 = new Image(gbl6.glassimg);
         gb6.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
         //gb2.setPosition(500,gb1.getHeight()+3);
         gb6.setPosition(
@@ -207,32 +200,32 @@ public class MainGameScreen implements Screen {
         );
         stage.addActor(gb6);
 
-        piga=new PigA(world,4.5f,0.3f+6*gb1.getHeight()/PPM+0.1f);
-        pig_image=new Image(piga.pigApic);
-        pig_image.setSize(Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
+        pigb = new PigB(world, 4.5f, 0.3f + 6 * gb1.getHeight() / PPM + 0.1f);
+        pig_image = new Image(pigb.pigBpic);
+        pig_image.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
         //pig_image.setPosition(500,6*(gb1.getHeight()+2));
         pig_image.setPosition(
-            piga.getPigAbody().getPosition().x * PPM - pig_image.getWidth() / 2,
-            piga.getPigAbody().getPosition().y * PPM - pig_image.getHeight() / 2
+            pigb.getPigBbody().getPosition().x * PPM - pig_image.getWidth() / 2,
+            pigb.getPigBbody().getPosition().y * PPM - pig_image.getHeight() / 2
         );
         stage.addActor(pig_image);
 
 
         //shift to victory screen
-        vButton=new Texture("vicButton.png");
-        v_image=new Image(vButton);
-        v_image.setSize(Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
+        vButton = new Texture("vicButton.png");
+        v_image = new Image(vButton);
+        v_image.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
         v_image.setPosition(10, 380);
         stage.addActor(v_image);
 
         //shift to lost screen
-        lButton=new Texture("lostButton.png");
-        l_image=new Image(lButton);
-        l_image.setSize(Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
+        lButton = new Texture("lostButton.png");
+        l_image = new Image(lButton);
+        l_image.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
         l_image.setPosition(10, 320);
         stage.addActor(l_image);
 
-        Screen v_s=new MainGameScreen(this.previousScreen);
+        Screen v_s = new MainGameScreen2(this.previousScreen);
         //adding listeners
         v_image.addListener(new ClickListener() {
             @Override
@@ -249,7 +242,6 @@ public class MainGameScreen implements Screen {
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new LostScreen(v_s));
             }
         });
-
 
 
         // Load the arrow image texture
@@ -273,13 +265,13 @@ public class MainGameScreen implements Screen {
         stage.addActor(backButton);
 
 
-        bb_image.addListener(new ClickListener() {
+        rr_image.addListener(new ClickListener() {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
                 isDragging = true;
-                dragStart.set(x + bb_image.getX(), y + bb_image.getY()); // Initial touch position
-                birdInitialPosition.set(bb.getBlackbody().getPosition()); // Store initial position of the bird
+                dragStart.set(x + rr_image.getX(), y + rr_image.getY()); // Initial touch position
+                birdInitialPosition.set(rr.getRedbody().getPosition()); // Store initial position of the bird
                 return true;
             }
 
@@ -287,9 +279,9 @@ public class MainGameScreen implements Screen {
             public void touchDragged(InputEvent event, float x, float y, int pointer) {
                 if (isDragging) {
                     // Update the drag position (adjust for image offset)
-                    dragEnd.set(x + bb_image.getX(), y + bb_image.getY());
+                    dragEnd.set(x + rr_image.getX(), y + rr_image.getY());
                     // Update bird's image position to follow drag
-                    bb_image.setPosition(dragEnd.x - bb_image.getWidth() / 2, dragEnd.y - bb_image.getHeight() / 2);
+                    rr_image.setPosition(dragEnd.x - rr_image.getWidth() / 2, dragEnd.y - rr_image.getHeight() / 2);
                 }
             }
 
@@ -303,24 +295,23 @@ public class MainGameScreen implements Screen {
                         birdInitialPosition.x * PPM - dragEnd.x,
                         birdInitialPosition.y * PPM - dragEnd.y
                     ).scl(1 / PPM); // Scale to world coordinates
-                    bb.getBlackbody().setType(BodyDef.BodyType.DynamicBody);
+                    rr.getRedbody().setType(BodyDef.BodyType.DynamicBody);
                     // Apply impulse to bird's Box2D body
-                    bb.getBlackbody().applyLinearImpulse(
+                    rr.getRedbody().applyLinearImpulse(
                         releaseVector.scl(10f), // Adjust the scalar for desired strength
-                        bb.getBlackbody().getWorldCenter(),
+                        rr.getRedbody().getWorldCenter(),
                         true
                     );
 
                     // Reset bird's image position to be updated by physics
-                    bb_image.setPosition(
-                        bb.getBlackbody().getPosition().x * PPM - bb_image.getWidth() / 2,
-                        bb.getBlackbody().getPosition().y * PPM - bb_image.getHeight() / 2
+                    rr_image.setPosition(
+                        rr.getRedbody().getPosition().x * PPM - rr_image.getWidth() / 2,
+                        rr.getRedbody().getPosition().y * PPM - rr_image.getHeight() / 2
                     );
                 }
             }
         });
     }
-
     @Override
     public void render(float delta) {
         // Clear the screen
@@ -330,11 +321,12 @@ public class MainGameScreen implements Screen {
 
         // Update bird position (if not dragging)
         if (!isDragging) {
-            bb_image.setPosition(
-                bb.getBlackbody().getPosition().x * PPM - bb_image.getWidth() / 2,
-                bb.getBlackbody().getPosition().y * PPM - bb_image.getHeight() / 2
+            rr_image.setPosition(
+                rr.getRedbody().getPosition().x * PPM - rr_image.getWidth() / 2,
+                rr.getRedbody().getPosition().y * PPM - rr_image.getHeight() / 2
             );
         }
+
         /*
         bb_image.setPosition(
             bb.getBlackbody().getPosition().x * PPM - bb_image.getWidth() / 2,
@@ -360,6 +352,7 @@ public class MainGameScreen implements Screen {
             gbl5.getGlassbody().getPosition().x * PPM - gb5.getWidth() / 2,
             gbl5.getGlassbody().getPosition().y * PPM - gb5.getHeight() / 2
         );
+
         gb6.setPosition(
             gbl6.getGlassbody().getPosition().x * PPM - gb6.getWidth() / 2,
             gbl6.getGlassbody().getPosition().y * PPM - gb6.getHeight() / 2
@@ -371,21 +364,21 @@ public class MainGameScreen implements Screen {
             // Proceed to the victory screen after the post-launch timer
             postLaunchTimer -= delta;
             if (postLaunchTimer <= 0) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new VictoryScreen(new MainGameScreen(previousScreen)));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new VictoryScreen(new MainGameScreen2(previousScreen)));
             }
-        } else if (bb.getBlackbody().getType() == BodyDef.BodyType.DynamicBody) {
+        } else if (rr.getRedbody().getType() == BodyDef.BodyType.DynamicBody) {
             // If the bird is launched but the pig is not hit
             postLaunchTimer -= delta;
             if (postLaunchTimer <= 0) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new LostScreen(new MainGameScreen(previousScreen)));
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new LostScreen(new MainGameScreen2(previousScreen)));
             }
         }
 
         // Update pig's position only if it is visible
         if (pig_image.isVisible()) {
             pig_image.setPosition(
-                piga.getPigAbody().getPosition().x * PPM - pig_image.getWidth() / 2,
-                piga.getPigAbody().getPosition().y * PPM - pig_image.getHeight() / 2
+                pigb.getPigBbody().getPosition().x * PPM - pig_image.getWidth() / 2,
+                pigb.getPigBbody().getPosition().y * PPM - pig_image.getHeight() / 2
             );
         }
 
@@ -394,7 +387,6 @@ public class MainGameScreen implements Screen {
         stage.act(delta);
         stage.draw();
     }
-
     @Override
     public void resize(int width, int height) {
         // Update the viewport with the new width and height
@@ -407,8 +399,8 @@ public class MainGameScreen implements Screen {
         cata_image.setSize(width / 10, (height + 1000) / 10);
         cata_image.setPosition(30, 10);
 
-        bb_image.setSize(width / 10, height / 10);
-        bb_image.setPosition(30, 100);
+        rr_image.setSize(width / 10, height / 10);
+        rr_image.setPosition(30, 100);
 
         // Reposition and resize glass blocks
         float blockHeight = height / 10;
