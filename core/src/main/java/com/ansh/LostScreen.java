@@ -19,6 +19,9 @@ public class LostScreen implements Screen{
     private Image back_image;
     private Screen previousScreen;
 
+    private Texture m_b;
+    private Image menu_image;
+
     public LostScreen(Screen previousScreen) {
         this.previousScreen = previousScreen;
     }
@@ -30,13 +33,18 @@ public class LostScreen implements Screen{
 
         los_b=new Texture("lost.png");
         back=new Texture("backButton.png");
+        m_b=new Texture("menubutton.png");
         los_image=new Image(los_b);
         back_image=new Image(back);
+        menu_image=new Image(m_b);
 
         los_image.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         back_image.setSize(Gdx.graphics.getWidth() / 20, Gdx.graphics.getHeight() / 20);
         back_image.setPosition(10, Gdx.graphics.getHeight() - back_image.getHeight() - 10);
+
+        menu_image.setSize(Gdx.graphics.getWidth() / 20, Gdx.graphics.getHeight() / 20);
+        menu_image.setPosition(10, Gdx.graphics.getHeight() - 2*back_image.getHeight() - 10);
 
 
 
@@ -47,8 +55,16 @@ public class LostScreen implements Screen{
                 ((Game) Gdx.app.getApplicationListener()).setScreen(previousScreen);
             }
         });
+        menu_image.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // Go back to the previous screen
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MenuScreen());
+            }
+        });
         stage.addActor(los_image);
         stage.addActor(back_image);
+        stage.addActor(menu_image);
 
 
     }
@@ -73,6 +89,9 @@ public class LostScreen implements Screen{
         // Reposition the back button to stay in the top-left corner
         back_image.setSize(width / 20, height / 20);
         back_image.setPosition(10, height - back_image.getHeight() - 10);
+
+        menu_image.setSize(width / 20, height / 20);
+        menu_image.setPosition(10, height - 2*back_image.getHeight() - 10);
     }
 
     @Override

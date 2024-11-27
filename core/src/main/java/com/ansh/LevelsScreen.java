@@ -22,6 +22,9 @@ public class LevelsScreen implements Screen {
     private Image image2;
     private Image image3;
 
+    private Texture m_b;
+    private Image menu_image;
+
     @Override
     public void show() {
         // Initialize the stage and set it to handle input
@@ -40,6 +43,10 @@ public class LevelsScreen implements Screen {
         image1Texture = new Texture("Level1.png"); // Replace with your image paths
         image2Texture = new Texture("Level2.png");
         image3Texture = new Texture("Level3.png");
+        m_b=new Texture("menubutton.png");
+        menu_image=new Image(m_b);
+        menu_image.setSize(Gdx.graphics.getWidth() / 20, Gdx.graphics.getHeight() / 20);
+        menu_image.setPosition(10, Gdx.graphics.getHeight() - menu_image.getHeight() - 10);
 
         // Create images
         image1 = new Image(image1Texture);
@@ -50,6 +57,7 @@ public class LevelsScreen implements Screen {
         image1.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
         image2.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
         image3.setSize(Gdx.graphics.getWidth() / 10, Gdx.graphics.getHeight() / 10);
+
 
         // Add images to the stage
         stage.addActor(image1);
@@ -88,6 +96,15 @@ public class LevelsScreen implements Screen {
             }
         });
 
+        menu_image.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Return to menu clicked!");
+                // Transition to the game start screen
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MenuScreen());
+            }
+        });
+        stage.addActor(menu_image);
         // Position images
         positionImages(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
@@ -134,9 +151,12 @@ public class LevelsScreen implements Screen {
     public void resize(int width, int height) {
         // Resize the stage's viewport
         stage.getViewport().update(width, height, true);
+        menu_image.setSize(Gdx.graphics.getWidth() / 20, Gdx.graphics.getHeight() / 20);
+        menu_image.setPosition(10, Gdx.graphics.getHeight() - menu_image.getHeight() - 10);
 
         // Reposition the images to handle full screen and windowed mode adjustments
         positionImages(width, height);
+
     }
 
     @Override

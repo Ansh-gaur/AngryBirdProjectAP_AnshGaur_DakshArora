@@ -46,6 +46,9 @@ public class MainGameScreen implements Screen {
     private Vector2 dragEnd = new Vector2(); // End position of the drag
     private Vector2 birdInitialPosition = new Vector2();
 
+    private boolean pigHit = false; // Flag to check if pig was hit
+    private float postLaunchTimer = 3f;
+
 
 
 
@@ -57,6 +60,29 @@ public class MainGameScreen implements Screen {
     @Override
     public void show() {
         world = new World(new Vector2(0, -9.8f), true);
+        //Adding contact Listener
+        world.setContactListener(new ContactListener() {
+            @Override
+            public void beginContact(Contact contact) {
+                // Check if the pig and the bird are in contact
+                Fixture fixtureA = contact.getFixtureA();
+                Fixture fixtureB = contact.getFixtureB();
+
+                if ((fixtureA.getBody() == piga.getPigAbody() && fixtureB.getBody() == bb.getBlackbody()) ||
+                    (fixtureB.getBody() == piga.getPigAbody() && fixtureA.getBody() == bb.getBlackbody())) {
+                    pigHit = true;
+                }
+            }
+
+            @Override
+            public void endContact(Contact contact) {}
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold) {}
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse) {}
+        });
         // Initialize the stage and set it to handle input
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
@@ -181,7 +207,7 @@ public class MainGameScreen implements Screen {
         );
         stage.addActor(gb6);
 
-        piga=new PigA(world,4.5f,0.3f+6*gb1.getHeight()/PPM);
+        piga=new PigA(world,4.5f,0.3f+6*gb1.getHeight()/PPM+0.1f);
         pig_image=new Image(piga.pigApic);
         pig_image.setSize(Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
         //pig_image.setPosition(500,6*(gb1.getHeight()+2));
@@ -342,6 +368,18 @@ public class MainGameScreen implements Screen {
             piga.getPigAbody().getPosition().x * PPM - pig_image.getWidth() / 2,
             piga.getPigAbody().getPosition().y * PPM - pig_image.getHeight() / 2
         );
+
+        if (bb.getBlackbody().getType() == BodyDef.BodyType.DynamicBody) {
+            postLaunchTimer -= delta;
+
+            if (postLaunchTimer <= 0) {
+                if (pigHit) {
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new VictoryScreen(new MainGameScreen(previousScreen)));
+                } else {
+                    ((Game) Gdx.app.getApplicationListener()).setScreen(new LostScreen(new MainGameScreen(previousScreen)));
+                }
+            }
+        }
 
 
         // Update and draw the stage
