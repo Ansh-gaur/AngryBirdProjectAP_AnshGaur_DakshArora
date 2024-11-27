@@ -22,6 +22,9 @@ public class oldgamescreen implements Screen {
     private Image image2;
     private Image image3;
 
+    private Texture m_b;
+    private Image menu_image;
+
     @Override
     public void show() {
         // Initialize the stage and set it to handle input
@@ -35,6 +38,12 @@ public class oldgamescreen implements Screen {
         // Set the background to fill the screen
         backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage.addActor(backgroundImage);
+
+        m_b=new Texture("menubutton.png");
+        menu_image=new Image(m_b);
+        menu_image.setSize(Gdx.graphics.getWidth() / 20, Gdx.graphics.getHeight() / 20);
+        menu_image.setPosition(10, Gdx.graphics.getHeight() - menu_image.getHeight() - 10);
+        stage.addActor(menu_image);
 
         // Load textures for the three images
         image1Texture = new Texture("arrow.jpg"); // Replace with your image paths
@@ -85,6 +94,14 @@ public class oldgamescreen implements Screen {
                 System.out.println("Start Game clicked!");
                 // Transition to the game start screen
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new MainGameScreen3(love));
+            }
+        });
+
+        menu_image.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Menu return clicked!");
+                ((Game) Gdx.app.getApplicationListener()).setScreen(new MenuScreen());
             }
         });
 
