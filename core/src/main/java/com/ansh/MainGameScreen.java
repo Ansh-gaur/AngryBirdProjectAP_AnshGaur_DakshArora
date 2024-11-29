@@ -88,28 +88,54 @@ public class MainGameScreen implements Screen {
             @Override
             public void postSolve(Contact contact, ContactImpulse impulse) {}
         });
+
+
+
         // Initialize the stage and set it to handle input
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         cata=new Catapult();
         bb=new BlackBird(world,0.6f,1.3f);
 
+//        // Define the ground body
+//        BodyDef groundBodyDef = new BodyDef();
+//        groundBodyDef.type = BodyDef.BodyType.StaticBody; // Ground doesn't move
+//        groundBodyDef.position.set(Gdx.graphics.getWidth()/PPM/2,0); // Set ground position at the bottom of the screen
+//
+//// Create the ground body in the world
+//        groundBody = world.createBody(groundBodyDef);
+//
+//// Define the ground shape as a box
+//        PolygonShape groundBox = new PolygonShape();
+//        groundBox.setAsBox(Gdx.graphics.getWidth() / PPM / 2, 10 / PPM); // Width is screen width, height is small
+//
+//// Create the fixture for collision
+//        FixtureDef groundFixtureDef = new FixtureDef();
+//        groundFixtureDef.shape = groundBox;
+//        groundFixtureDef.friction = 0.5f; // Optional: control sliding
+//        groundBody.createFixture(groundFixtureDef);
+//
+//// Dispose the shape after creating the fixture
+//        groundBox.dispose();
+
         // Define the ground body
         BodyDef groundBodyDef = new BodyDef();
         groundBodyDef.type = BodyDef.BodyType.StaticBody; // Ground doesn't move
-        groundBodyDef.position.set(Gdx.graphics.getWidth()/PPM/2,0); // Set ground position at the bottom of the screen
+        float groundHeight = (3 * Gdx.graphics.getHeight()) / 10; // Ground height at 30% above the screen bottom
+        float groundWidth = Gdx.graphics.getWidth(); // Ground spans the full width
+        groundBodyDef.position.set(groundWidth / (2 * PPM), groundHeight / PPM); // Center horizontally, set to ground height
 
 // Create the ground body in the world
         groundBody = world.createBody(groundBodyDef);
 
 // Define the ground shape as a box
         PolygonShape groundBox = new PolygonShape();
-        groundBox.setAsBox(Gdx.graphics.getWidth() / PPM / 2, 10 / PPM); // Width is screen width, height is small
+        groundBox.setAsBox((groundWidth / 2) / PPM, 10 / PPM); // Set the width and a small height for the ground physics
 
 // Create the fixture for collision
         FixtureDef groundFixtureDef = new FixtureDef();
         groundFixtureDef.shape = groundBox;
-        groundFixtureDef.friction = 0.5f; // Optional: control sliding
+        groundFixtureDef.friction = 1f; // Set friction for controlling sliding behavior
         groundBody.createFixture(groundFixtureDef);
 
 // Dispose the shape after creating the fixture
@@ -310,20 +336,59 @@ public class MainGameScreen implements Screen {
                 }
             }
 
+//            @Override
+//            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+//                if (isDragging) {
+//                    isDragging = false;
+//
+//                    // Calculate drag vector and release velocity
+//                    Vector2 releaseVector = new Vector2(
+//                        birdInitialPosition.x * PPM - dragEnd.x,
+//                        birdInitialPosition.y * PPM - dragEnd.y
+//                    ).scl(1 / PPM); // Scale to world coordinates
+//                    bb.getBlackbody().setType(BodyDef.BodyType.DynamicBody);
+//                    // Apply impulse to bird's Box2D body
+//                    bb.getBlackbody().applyLinearImpulse(
+//                        releaseVector.scl(10f), // Adjust the scalar for desired strength
+//                        bb.getBlackbody().getWorldCenter(),
+//                        true
+//                    );
+//
+//                    // Reset bird's image position to be updated by physics
+//                    bb_image.setPosition(
+//                        bb.getBlackbody().getPosition().x * PPM - bb_image.getWidth() / 2,
+//                        bb.getBlackbody().getPosition().y * PPM - bb_image.getHeight() / 2
+//                    );
+//                }
+//            }
+
+
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 if (isDragging) {
                     isDragging = false;
 
-                    // Calculate drag vector and release velocity
+                    // Calculate drag vector
                     Vector2 releaseVector = new Vector2(
                         birdInitialPosition.x * PPM - dragEnd.x,
                         birdInitialPosition.y * PPM - dragEnd.y
                     ).scl(1 / PPM); // Scale to world coordinates
+
+                    // Limit the maximum impulse strength
+                    float maxForce = 15f; // Maximum allowable force (adjust as needed)
+                    if (releaseVector.len() > maxForce) {
+                        releaseVector.setLength(maxForce); // Clamp vector to maxForce length
+                    }
+
+                    // Scale impulse based on drag distance
+                    float dragDistance = dragStart.dst(dragEnd); // Drag distance in pixels
+                    float maxDistance = 300f; // Maximum drag distance for full impulse
+                    float impulseScale = Math.min(dragDistance / maxDistance, 1f); // Proportional scale
+
+                    // Apply impulse to the bird
                     bb.getBlackbody().setType(BodyDef.BodyType.DynamicBody);
-                    // Apply impulse to bird's Box2D body
                     bb.getBlackbody().applyLinearImpulse(
-                        releaseVector.scl(10f), // Adjust the scalar for desired strength
+                        releaseVector.scl(impulseScale * 5f), // Adjust scalar for desired strength
                         bb.getBlackbody().getWorldCenter(),
                         true
                     );
@@ -335,6 +400,7 @@ public class MainGameScreen implements Screen {
                     );
                 }
             }
+
         });
     }
 
@@ -414,6 +480,65 @@ public class MainGameScreen implements Screen {
         stage.draw();
     }
 
+    //    @Override
+//    public void resize(int width, int height) {
+//        // Update the viewport with the new width and height
+//        stage.getViewport().update(width, height, true);
+//
+//        // Update background size to fill the screen
+//        backgroundImage.setSize(width, height);
+//
+//        // Update the positions and sizes of game elements
+//        cata_image.setSize(width / 10, (height + 1000) / 10);
+//        cata_image.setPosition(30, 10);
+//
+//        bb_image.setSize(width / 10, height / 10);
+//        bb_image.setPosition(30, 100);
+//
+//        // Reposition and resize glass blocks
+//        float blockHeight = height / 10;
+//        float blockWidth = width / 10;
+//
+//        gb1.setSize(blockWidth, blockHeight);
+//        gb1.setPosition(500, 10);
+//
+//
+//
+//        gb2.setSize(blockWidth, blockHeight);
+//        gb2.setPosition(500, gb1.getY() + blockHeight + 3);
+//
+//        gb3.setSize(blockWidth, blockHeight);
+//        gb3.setPosition(500, gb2.getY() + blockHeight + 3);
+//
+//        gb4.setSize(blockWidth, blockHeight);
+//        gb4.setPosition(500, gb3.getY() + blockHeight + 3);
+//
+//        gb5.setSize(blockWidth, blockHeight);
+//        gb5.setPosition(500, gb4.getY() + blockHeight + 2);
+//
+//        gb6.setSize(blockWidth, blockHeight);
+//        gb6.setPosition(500, gb5.getY() + blockHeight + 2);
+//
+//
+//        pig_image.setSize(blockWidth, blockHeight);
+//        pig_image.setPosition(500, gb6.getY() + blockHeight + 2);
+//
+//
+//        // Update the sizes and positions of buttons
+//        v_image.setSize(width / 10, height / 10);
+//        v_image.setPosition(10, 380);
+//
+//        l_image.setSize(width / 10, height / 10);
+//        l_image.setPosition(10, 320);
+//
+//        save_image.setSize(width / 10, height / 10);
+//        save_image.setPosition(10, 260);
+//
+//        backButton.setSize(width / 20, height / 20);
+//        backButton.setPosition(10, height - backButton.getHeight() - 10);
+//
+//
+//    }
     @Override
     public void resize(int width, int height) {
         // Update the viewport with the new width and height
@@ -423,53 +548,90 @@ public class MainGameScreen implements Screen {
         backgroundImage.setSize(width, height);
 
         // Update the positions and sizes of game elements
-        cata_image.setSize(width / 10, (height + 1000) / 10);
-        cata_image.setPosition(30, 10);
+        cata_image.setSize(width / 10, (2*height ) / 10);
+        cata_image.setPosition((width) / 5, (3*height) / 10);
+
 
         bb_image.setSize(width / 10, height / 10);
-        bb_image.setPosition(30, 100);
+
+        //        bb_image.setPosition(
+        //            bb.getBlackbody().getPosition().x * PPM - bb_image.getWidth() / 2,
+        //            bb.getBlackbody().getPosition().y * PPM - bb_image.getHeight() / 2
+        //        );
+        bb_image.setPosition(
+            cata_image.getX(), (cata_image.getY())+(3*cata_image.getHeight())/4);
+        bb.getBlackbody().setTransform((cata_image.getX()+(bb_image.getWidth()/2))/PPM, ((cata_image.getY()+(bb_image.getHeight()/2))+(3*cata_image.getHeight())/4)/PPM, 0);
+
+        //        bb_image.setPosition(width / 5, (height) / 10);
 
         // Reposition and resize glass blocks
         float blockHeight = height / 10;
         float blockWidth = width / 10;
 
         gb1.setSize(blockWidth, blockHeight);
-        gb1.setPosition(500, 10);
+        gb1.setPosition((4*width) / 5, (3*height) / 10);
+        gbl1.getGlassbody().setTransform((((4*width)/5)+gb1.getWidth() / 2)/PPM, ((3*height/10)+(gb1.getHeight() / 2))/PPM, 0);
+
 
 
 
         gb2.setSize(blockWidth, blockHeight);
-        gb2.setPosition(500, gb1.getY() + blockHeight + 3);
+        //        gb2.setPosition(gb1.getX(), gb1.getY() + blockHeight + 3);
+        //        gb2.setPosition((4*width) / 5, ((3*height) / 10)+((blockHeight)));
+        //        gbl2.getGlassbody().setTransform((((4*width)/5)+gb1.getWidth() / 2)/PPM, ((3*height/10)+(gb1.getHeight() / 2)+((blockHeight)))/PPM, 0);
+        gb2.setPosition(gb1.getX(), gb1.getY()+((blockHeight)));
+        gbl2.getGlassbody().setTransform((gb1.getX()+(gb2.getWidth() / 2))/PPM, (gb1.getY()+(gb2.getHeight() / 2)+((blockHeight)))/PPM, 0);
+
 
         gb3.setSize(blockWidth, blockHeight);
-        gb3.setPosition(500, gb2.getY() + blockHeight + 3);
+        //        gb3.setPosition(gb1.getX(), gb2.getY() + blockHeight + 3);
+
+        gb3.setPosition(gb2.getX(), gb2.getY()+((blockHeight)));
+        gbl3.getGlassbody().setTransform((gb2.getX()+(gb3.getWidth() / 2))/PPM, (gb2.getY()+(gb3.getHeight() / 2)+((blockHeight)))/PPM, 0);
+
 
         gb4.setSize(blockWidth, blockHeight);
-        gb4.setPosition(500, gb3.getY() + blockHeight + 3);
+        //        gb4.setPosition(gb1.getX(), gb3.getY() + blockHeight + 3);
+        gb4.setPosition(gb3.getX(), gb3.getY()+((blockHeight)));
+        gbl4.getGlassbody().setTransform((gb3.getX()+(gb3.getWidth() / 2))/PPM, (gb3.getY()+(gb3.getHeight() / 2)+((blockHeight)))/PPM, 0);
+
 
         gb5.setSize(blockWidth, blockHeight);
-        gb5.setPosition(500, gb4.getY() + blockHeight + 2);
+        //        gb5.setPosition(gb1.getX(), gb4.getY() + blockHeight + 2);
+        gb5.setPosition(gb4.getX(), gb4.getY()+((blockHeight)));
+        gbl5.getGlassbody().setTransform((gb4.getX()+(gb3.getWidth() / 2))/PPM, (gb4.getY()+(gb3.getHeight() / 2)+((blockHeight)))/PPM, 0);
+
 
         gb6.setSize(blockWidth, blockHeight);
-        gb6.setPosition(500, gb5.getY() + blockHeight + 2);
+        //        gb6.setPosition(gb1.getX(), gb5.getY() + blockHeight + 2);
+        gb6.setPosition(gb5.getX(), gb5.getY()+((blockHeight)));
+        gbl6.getGlassbody().setTransform((gb5.getX()+(gb3.getWidth() / 2))/PPM, (gb5.getY()+(gb3.getHeight() / 2)+((blockHeight)))/PPM, 0);
+
 
 
         pig_image.setSize(blockWidth, blockHeight);
-        pig_image.setPosition(500, gb6.getY() + blockHeight + 2);
+        //        pig_image.setPosition(gb6.getX(), gb6.getY() + blockHeight);
+        pig_image.setPosition(gb6.getX(), gb6.getY()+((blockHeight)));
+        piga.getPigAbody().setTransform((gb6.getX()+(pig_image.getWidth() / 2))/PPM, (gb6.getY()+(pig_image.getHeight() / 2)+((blockHeight)))/PPM, 0);
+
 
 
         // Update the sizes and positions of buttons
-        v_image.setSize(width / 10, height / 10);
-        v_image.setPosition(10, 380);
+        v_image.setSize(width / 20, height / 20);
+        //        v_image.setPosition(10, 380);
+        v_image.setPosition(width / 20, (14*height) / 20);
 
-        l_image.setSize(width / 10, height / 10);
-        l_image.setPosition(10, 320);
+        l_image.setSize(width / 20, height / 20);
+        //        l_image.setPosition(10, 320);
+        l_image.setPosition(width / 20, (16*height) / 20);
 
-        save_image.setSize(width / 10, height / 10);
-        save_image.setPosition(10, 260);
+        save_image.setSize(width / 20, height / 20);
+        save_image.setPosition(width / 20, (12*height) / 20);
+
 
         backButton.setSize(width / 20, height / 20);
-        backButton.setPosition(10, height - backButton.getHeight() - 10);
+        //        backButton.setPosition(width / 20, height - backButton.getHeight() - 10);
+        backButton.setPosition((width) / 20, (18*height) / 20);
 
 
     }
