@@ -119,6 +119,7 @@ public class MainGameScreen implements Screen {
 //        groundBox.dispose();
 
         // Define the ground body
+        Ground g=new Ground();
         BodyDef groundBodyDef = new BodyDef();
         groundBodyDef.type = BodyDef.BodyType.StaticBody; // Ground doesn't move
         float groundHeight = (3 * Gdx.graphics.getHeight()) / 10; // Ground height at 30% above the screen bottom

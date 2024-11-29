@@ -95,7 +95,7 @@ public class MainGameScreen2 implements Screen {
         Gdx.input.setInputProcessor(stage);
         cata = new Catapult();
         rr = new RedBird(world, 0.6f, 1.3f);
-
+        Ground g=new Ground();
         // Define the ground body
         BodyDef groundBodyDef = new BodyDef();
         groundBodyDef.type = BodyDef.BodyType.StaticBody; // Ground doesn't move
