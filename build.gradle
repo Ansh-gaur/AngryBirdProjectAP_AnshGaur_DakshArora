@@ -68,6 +68,16 @@ subprojects {
     maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'https://jitpack.io' }
   }
+  dependencies {
+    implementation 'com.badlogicgames.gdx:gdx-backend-lwjgl3:1.10.0'
+    runtimeOnly 'com.badlogicgames.gdx:gdx-platform:1.10.0:natives-desktop'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    testImplementation 'org.mockito:mockito-core:5.5.0'
+    testImplementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+  }
+
+
 }
 
 eclipse.project.name = 'AnshGaur_DakshArora' + '-parent'

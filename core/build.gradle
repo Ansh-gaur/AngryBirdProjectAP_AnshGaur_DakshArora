@@ -10,4 +10,19 @@ dependencies {
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }
+  sourceSets {
+    main{
+      java{
+        srcDirs 'src/main/java'
+      }
+    }
+    test{
+      java{
+        srcDir 'src/test/java'
+      }
+    }
+  }
+  test{
+    useJUnitPlatform()
+  }
 }
